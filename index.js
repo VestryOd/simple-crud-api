@@ -4,7 +4,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.setHeader('Content-Type', 'application/json');
+  // res.writeHead(200, {'Content-Type': 'application/json'});
+  console.log('-----&&----');
+  console.log("Url: " + req.url);
+  console.log("Тип запроса: " + req.method);
+  console.log("User-Agent: " + req.headers["user-agent"]);
+  console.log("Все заголовки");
+  console.log(req.headers);
+  console.log('---------');
   res.end();
 });
 
