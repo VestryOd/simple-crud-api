@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import Person from "./model.js";
 import { CustomError } from "../../helpers.js";
 
@@ -38,8 +38,9 @@ export default class RepositoryApi {
             });
         }
         const person = new Person(data);
-        person.id = uuidv4();
+        // person.id = uuidv4();
         this._DB.set(person.id, person);
+        console.log('--add', person);
         return person;
     }
 

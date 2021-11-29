@@ -33,6 +33,7 @@ const create = (req, res) => {
     req.on('data', (data) => newPerson += data);
     req.on('end', () => {
       const data = JSON.parse(newPerson);
+      console.log('--create', data);
       result = api.add(data);
     });
     return result;

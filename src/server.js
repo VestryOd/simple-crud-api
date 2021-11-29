@@ -5,11 +5,8 @@ import router from './resources/persons/router.js';
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-  // console.log("Url: " + req.url);
-  // console.log("Тип запроса: " + req.method);
-  // console.log("User-Agent: " + req.headers["user-agent"]);
-  // console.log("Все заголовки");
-  // console.log(req.headers);
+  const { method, url } = req;
+  console.log(`Request, method ${method}, url: ${url}`);
   try {
     router(req, res);
   } catch(error) {

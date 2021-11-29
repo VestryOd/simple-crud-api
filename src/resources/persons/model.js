@@ -1,5 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
+
 class Person {
     constructor(props) {
+        this.id = uuidv4();
         this.name = props.name;
         this.age = props.age;
         this.hobbies = props.hobbies;
