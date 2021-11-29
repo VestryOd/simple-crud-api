@@ -1,13 +1,8 @@
-import { errors } from "./constants";
+import { validate } from "uuid";
 
-class ServerError extends Error{
-  constructor() {
-    super();
-    this.message = errors.serverError;
-    this.isServerSide = true;
-    this.statusCode = 500;
-  }
-}
+const validateUUID = id => validate(id);
+
+const validatePureUrl = url => url.indexOf('persons') !== -1;
 
 class CustomError extends Error {
   constructor(props) {
@@ -22,7 +17,8 @@ const parseId = (reqUrl) => {
 }
 
 export {
-  ServerError,
   parseId,
   CustomError,
+  validateUUID,
+  validatePureUrl,
 };

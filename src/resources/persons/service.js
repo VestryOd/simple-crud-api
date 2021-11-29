@@ -1,13 +1,11 @@
 import RepositoryApi from "./repository.api";
 const api = new RepositoryApi();
-import { parseId } from "../../helpers";
 import db from "./db";
 
 api.connectDB(db);
 
-const getOne = (req, res) => {
+const getOne = (req, res, id) => {
   try {
-    const id = parseId(req.url);
     return api.getOne(id);
   } catch (e) {
     const { message, statusCode } = e;
@@ -30,12 +28,14 @@ const getAll = (req, res) => {
 
 const create = (req, res) => {
   try {
+    let result = null;
     let newPerson = '';
     req.on('data', (data) => newPerson += data);
     req.on('end', () => {
       const data = JSON.parse(newPerson);
-      return api.add(data);
+      result = api.add(data);
     });
+    return result;
   } catch(e) {
     const { message, statusCode } = e;
     console.error(`Service-layer, operation: create, reason: ${message || e}`);
@@ -46,12 +46,14 @@ const create = (req, res) => {
 
 const update = (req, res) => {
   try {
+    let result = null;
     let updatedPerson = '';
     req.on('data', (data) => updatedPerson += data);
     req.on('end', () => {
       const data = JSON.parse(updatedPerson);
-      return api.update(data);
-    })
+      result = api.update(data);
+    });
+    return result;
   } catch (e) {
     const { message, statusCode } = e;
     console.error(`Service-layer, operation: update, reason: ${message || e}`);
@@ -60,9 +62,8 @@ const update = (req, res) => {
   }
 }
 
-const remove = (req, res) => {
+const remove = (req, res, id) => {
   try {
-    const id = parseId(req.url);
     return api.remove(id);
   } catch (e) {
     const { message, statusCode } = e;

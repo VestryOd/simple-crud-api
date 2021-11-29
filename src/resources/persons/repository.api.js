@@ -34,7 +34,7 @@ export default class RepositoryApi {
         if (!checked.validated) {
             return new CustomError({
                 message: `Incorrect fields: ${checked.wrongFields.join(', ')}`,
-                statusCode: 422,
+                statusCode: 400,
             });
         }
         const person = new Person(data);
