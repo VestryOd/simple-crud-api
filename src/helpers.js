@@ -9,6 +9,14 @@ class ServerError extends Error{
   }
 }
 
+class CustomError extends Error {
+  constructor(props) {
+    super(props);
+    this.message = props.message;
+    this.statusCode = props.statusCode;
+  }
+}
+
 const parseId = (reqUrl) => {
   return reqUrl.slice(1).split('/')[1];
 }
@@ -16,4 +24,5 @@ const parseId = (reqUrl) => {
 export {
   ServerError,
   parseId,
+  CustomError,
 };
