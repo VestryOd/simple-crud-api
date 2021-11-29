@@ -1,6 +1,6 @@
-import RepositoryApi from "./repository.api";
+import RepositoryApi from "./repository.api.js";
 const api = new RepositoryApi();
-import db from "./db";
+import db from "./db.js";
 
 api.connectDB(db);
 

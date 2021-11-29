@@ -1,19 +1,20 @@
 import http from 'http';
 import dotenv from 'dotenv';
-import personsRouter from './resources/persons/personsRouter';
-console.log('--router', personsRouter);
+import router from './resources/persons/router.js';
 
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-  console.log('-----&&----');
   // console.log("Url: " + req.url);
   // console.log("Тип запроса: " + req.method);
   // console.log("User-Agent: " + req.headers["user-agent"]);
   // console.log("Все заголовки");
   // console.log(req.headers);
-  // router(req, res);
-  console.log('---------');
+  try {
+    router(req, res);
+  } catch(error) {
+    console.error('server error:', error);
+  }
 });
 
 server.listen(process.env.PORT, process.env.HOST, () => {

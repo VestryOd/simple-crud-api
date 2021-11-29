@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import Person from "./model";
-import { CustomError } from "../../helpers";
+import Person from "./model.js";
+import { CustomError } from "../../helpers.js";
 
 export default class RepositoryApi {
     constructor() {

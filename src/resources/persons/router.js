@@ -1,7 +1,7 @@
-import { parseId, validatePureUrl, validateUUID } from "../../helpers.js";
-import { getOne, getAll, create, update, remove } from './service';
+import { parseId, validatePureUrl, validateUUID } from '../../helpers.js';
+import { getOne, getAll, create, update, remove } from './service.js';
 
-function personsRouter(req, res) {
+function router(req, res) {
     const { method, url } = req;
     const headOptions = { 'Content-Type': 'application/json' };
     const id = parseId(url);
@@ -43,4 +43,4 @@ function personsRouter(req, res) {
     }
 }
 
-export default personsRouter;
+export default router;
