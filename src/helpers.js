@@ -16,9 +16,24 @@ const parseId = (reqUrl) => {
   return reqUrl.slice(1).split('/')[1];
 }
 
+const validateRules = {
+  name: (prop) => {
+    return typeof prop === 'string' && prop?.length > 0;
+  },
+  age: (prop) => {
+    return typeof prop === 'number' && prop > 0;
+  },
+  hobbies: (prop) => {
+    if (!Array.isArray(prop)) return false;
+    const wrongEntries = prop.filter(el => typeof el !== 'string')
+    return wrongEntries?.length <= 0;
+  },
+};
+
 export {
   parseId,
   CustomError,
   validateUUID,
   validatePureUrl,
+  validateRules,
 };

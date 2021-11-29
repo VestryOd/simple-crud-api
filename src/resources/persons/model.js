@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { validateRules } from "../../helpers.js";
 
 class Person {
     constructor(props) {
@@ -8,33 +9,19 @@ class Person {
         this.hobbies = props.hobbies;
     }
 
-    static fields = {
-        name: {
-            type: 'string', isRequired: true
-        },
-        age: {
-            type: 'number', isRequired: true,
-        },
-        hobbies: {
-            type: 'array', isRequired: true,
-        }
-    }
+    static fields = ['name', 'age', 'hobbies']
 
     static validateFields(obj) {
         const result = {
             validated: true,
             wrongFields: [],
         };
-        Object.keys(this.fields).forEach(prop => {
+        this.fields.forEach(prop => {
             if (!prop in obj) {
                 result.validated = false;
                 result.wrongFields.push(prop);
             } else {
-                if (
-                    this.fields[prop].type === 'array'
-                    && !Array.isArray(obj[prop])
-                    || this.fields[prop].type !== typeof prop
-                ) {
+                if (prop && !validateRules[prop](obj[prop])) {
                     result.validated = false;
                     result.wrongFields.push(prop);
                 }

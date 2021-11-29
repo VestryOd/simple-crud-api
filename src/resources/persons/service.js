@@ -9,7 +9,7 @@ const getOne = (req, res, id) => {
     return api.getOne(id);
   } catch (e) {
     const { message, statusCode } = e;
-    console.error(`Service-layer, operation: getOne, reason: ${message || e}`);
+    console.error(`Response: getOne failed, reason: ${message || e}, code: ${statusCode}`);
     res.writeHead(statusCode || 500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: message || "Internal server error" }));
   }
@@ -20,44 +20,29 @@ const getAll = (req, res) => {
     return api.getAll();
   } catch(e) {
     const { message, statusCode } = e;
-    console.error(`Service-layer, operation: getAll, reason: ${message || e}`);
+    console.error(`Response: getAll failed, reason: ${message || e}, code: ${statusCode}`);
     res.writeHead(statusCode || 500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: message || "Internal server error" }));
   }
 }
 
-const create = (req, res) => {
+const create = async (req, res) => {
   try {
-    let result = null;
-    let newPerson = '';
-    req.on('data', (data) => newPerson += data);
-    req.on('end', () => {
-      const data = JSON.parse(newPerson);
-      console.log('--create', data);
-      result = api.add(data);
-    });
-    return result;
+    return await api.add(req, res);
   } catch(e) {
     const { message, statusCode } = e;
-    console.error(`Service-layer, operation: create, reason: ${message || e}`);
+    console.error(`Response: create failed, reason: ${message || e}, code: ${statusCode}`);
     res.writeHead(statusCode || 500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: message || "Internal server error" }));
   }
 }
 
-const update = (req, res) => {
+const update = async (req, res) => {
   try {
-    let result = null;
-    let updatedPerson = '';
-    req.on('data', (data) => updatedPerson += data);
-    req.on('end', () => {
-      const data = JSON.parse(updatedPerson);
-      result = api.update(data);
-    });
-    return result;
+    return await api.update(req, res);
   } catch (e) {
     const { message, statusCode } = e;
-    console.error(`Service-layer, operation: update, reason: ${message || e}`);
+    console.error(`Response: update failed, reason: ${message || e}, code: ${statusCode}`);
     res.writeHead(statusCode || 500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: message || "Internal server error" }));
   }
@@ -68,7 +53,7 @@ const remove = (req, res, id) => {
     return api.remove(id);
   } catch (e) {
     const { message, statusCode } = e;
-    console.error(`Service-layer, operation: remove, reason: ${message || e}`);
+    console.error(`Response: remove failed, reason: ${message || e}, code: ${statusCode}`);
     res.writeHead(statusCode || 500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: message || "Internal server error" }));
   }

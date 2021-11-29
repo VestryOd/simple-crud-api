@@ -17,11 +17,13 @@ export default class RepositoryApi {
 
     getOne(id) {
         if (!id || !this._checkExistence(id)) {
-            return new CustomError({
+            console.log('--not exist', id);
+            throw new CustomError({
                 message: `Person with id: ${id} not found`,
                 statusCode: 404,
             });
         }
+        console.log('--return something');
         return this._DB.get(id);
     }
 
@@ -29,45 +31,56 @@ export default class RepositoryApi {
         return Array.from(this._DB.values());
     }
 
-    add(data) {
-        const checked = Person.validateFields(data);
-        if (!checked.validated) {
-            return new CustomError({
-                message: `Incorrect fields: ${checked.wrongFields.join(', ')}`,
-                statusCode: 400,
-            });
-        }
-        const person = new Person(data);
-        // person.id = uuidv4();
-        this._DB.set(person.id, person);
-        console.log('--add', person);
-        return person;
+    add(req, _) {
+        return new Promise((resolve, reject) => {
+            req.on('data', chunk => {
+                const data = JSON.parse(chunk);
+                const checked = Person.validateFields(data);
+                if (!checked.validated) {
+                    reject({
+                        message: `Incorrect fields: ${checked.wrongFields.join(', ')}`,
+                        statusCode: 400,
+                    });
+                } else {
+                    const person = new Person(data);
+                    this._DB.set(person.id, person);
+                    console.log('--add', person);
+                    resolve(person);
+                }
+            })
+        });
     }
 
-    update(data) {
-        const { id } = data;
-        if (!id || !this._checkExistence(id)) {
-            return new CustomError({
-                message: `Person with id: ${id} not found`,
-                statusCode: 404,
-            });
-        }
-        const upd = {
-            ...this._DB.get(id),
-            ...data,
-        };
-        this._DB.set(id, upd);
-        return upd;
+    update(req, _) {
+        return new Promise((resolve, reject) => {
+            req.on('data', chunk => {
+                const data = JSON.parse(chunk);
+                const { id } = data;
+                if(!id || !this._checkExistence(id)) {
+                    reject({
+                        message: `Person with id: ${id} not found`,
+                        statusCode: 404,
+                    });
+                } else {
+                    const upd = {
+                        ...this._DB.get(id),
+                        ...data,
+                    };
+                    this._DB.set(id, upd);
+                    resolve(upd);
+                }
+            })
+        });
     }
 
     remove(id) {
         if (!id || !this._checkExistence(id)) {
-            return new CustomError({
+            throw new CustomError({
                 message: `Person with id: ${id} not found`,
                 statusCode: 404,
             });
         }
         this._DB.delete(id);
-        return true;
+        return `Person with id: ${id} has removed`;
     }
 }
