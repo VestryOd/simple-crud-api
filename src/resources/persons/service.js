@@ -37,9 +37,9 @@ const create = async (req, res) => {
   }
 }
 
-const update = async (req, res) => {
+const update = async (req, res, id) => {
   try {
-    return await api.update(req, res);
+    return await api.update(req, res, id);
   } catch (e) {
     const { message, statusCode } = e;
     console.error(`Response: update failed, reason: ${message || e}, code: ${statusCode}`);

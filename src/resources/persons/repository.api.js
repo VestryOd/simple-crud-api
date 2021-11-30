@@ -1,4 +1,3 @@
-// import { v4 as uuidv4 } from 'uuid';
 import Person from "./model.js";
 import { CustomError } from "../../helpers.js";
 
@@ -17,13 +16,11 @@ export default class RepositoryApi {
 
     getOne(id) {
         if (!id || !this._checkExistence(id)) {
-            console.log('--not exist', id);
             throw new CustomError({
                 message: `Person with id: ${id} not found`,
                 statusCode: 404,
             });
         }
-        console.log('--return something');
         return this._DB.get(id);
     }
 
@@ -44,29 +41,28 @@ export default class RepositoryApi {
                 } else {
                     const person = new Person(data);
                     this._DB.set(person.id, person);
-                    console.log('--add', person);
                     resolve(person);
                 }
             })
         });
     }
 
-    update(req, _) {
+    update(req, _, id) {
         return new Promise((resolve, reject) => {
             req.on('data', chunk => {
                 const data = JSON.parse(chunk);
-                const { id } = data;
-                if(!id || !this._checkExistence(id)) {
+                const personId = id || data?.id;
+                if(!personId || !this._checkExistence(personId)) {
                     reject({
-                        message: `Person with id: ${id} not found`,
+                        message: `Person with id: ${personId} not found`,
                         statusCode: 404,
                     });
                 } else {
                     const upd = {
-                        ...this._DB.get(id),
+                        ...this._DB.get(personId),
                         ...data,
                     };
-                    this._DB.set(id, upd);
+                    this._DB.set(personId, upd);
                     resolve(upd);
                 }
             })

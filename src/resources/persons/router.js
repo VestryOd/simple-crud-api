@@ -18,7 +18,7 @@ function router(req, res) {
         return;
     }
 
-    if (id && (method === 'POST' || method === 'PUT')) {
+    if (id && method === 'POST') {
         res.writeHead(400, headOptions);
         res.end(JSON.stringify({ message: `Wrong request. No params in url` }));
         return;
@@ -47,7 +47,7 @@ function router(req, res) {
             });
             break;
         case 'PUT':
-            update(req, res).then(data => {
+            update(req, res, id).then(data => {
                 if (data) {
                     res.writeHead(200, headOptions);
                     prepared = JSON.stringify(data);
