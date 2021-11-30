@@ -1,0 +1,32 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "Node.js RSSchool course, task 2",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VestryOd/simple-crud-api.git"
+  },
+  "keywords": [
+    "js",
+    "node.js",
+    "rest-api"
+  ],
+  "author": "VestryOd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VestryOd/simple-crud-api/issues"
+  },
+  "homepage": "https://github.com/VestryOd/simple-crud-api#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
